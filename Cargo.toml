@@ -1,0 +1,10 @@
+[package]
+name = "random_challenges"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "wc"
+path = "src/wc.rs"
+
+[dependencies]
