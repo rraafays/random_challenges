@@ -1,25 +1,26 @@
-use std::{
-    convert::Infallible,
-    env::{self, Args},
-    fs::File,
-    io::Error,
-    path::Path,
-};
+use std::{fs::File, io::Error, path::Path, process::exit};
+
+use clap::Parser;
+
+#[derive(Parser, Debug)]
+#[command(version, about)]
+struct Arguments {
+    #[arg(index(1))]
+    path: String,
+}
 
 fn main() {
-    let args: Result<Args, Infallible> = Args::try_from(env::args().collect());
-    let defined_args = match args {
-        Ok(args) => args,
-        Err(_) => panic!("no file provided"),
-    };
+    let arguments = Arguments::parse();
 
-    let file: Result<File, Error> =
-        File::open(Path::new(&defined_args.into_iter()[0]));
-    let data: File = match file {
+    let file: Result<File, Error> = File::open(Path::new(&arguments.path));
+    let _data: File = match file {
         Ok(file) => {
             print!("found");
             file
         }
-        Err(_) => panic!("no file found"),
+        Err(_) => {
+            eprintln!("file not found!");
+            exit(1);
+        }
     };
 }
