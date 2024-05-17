@@ -1,6 +1,10 @@
 use std::{
     fs::File,
-    io::{BufRead, BufReader, Error},
+    io::{
+        BufRead,
+        BufReader,
+        Error,
+    },
     path::Path,
     process::exit,
 };
@@ -20,8 +24,8 @@ fn main() {
     let file: Result<File, Error> = File::open(Path::new(&arguments.path));
     match file {
         Ok(contents) => {
-            let count: usize = get_lines(&contents).len();
-            println!("lines: {}", count)
+            let lines = get_lines(&contents);
+            println!("lines: {}", count_lines(lines))
         }
         Err(_) => {
             eprintln!("file not found!");
@@ -41,3 +45,5 @@ fn get_lines(file: &File) -> Vec<String> {
     }
     lines
 }
+
+fn count_lines(lines: Vec<String>) -> usize { lines.len() }
