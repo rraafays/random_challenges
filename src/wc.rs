@@ -3,7 +3,6 @@ use std::{
     io::{
         BufRead,
         BufReader,
-        Error,
     },
     path::Path,
     process::exit,
@@ -21,17 +20,20 @@ struct Arguments {
 fn main() {
     let arguments: Arguments = Arguments::parse();
 
-    let file: Result<File, Error> = File::open(Path::new(&arguments.path));
-    match file {
-        Ok(contents) => {
-            let lines = get_lines(&contents);
-            println!("lines: {}", count_lines(lines))
-        }
+    let path: &Path = Path::new(&arguments.path);
+    let file: File = match File::open(path) {
+        Ok(contents) => contents,
         Err(_) => {
-            eprintln!("file not found!");
+            println!(
+                "wc: {}: No such file or directory",
+                path.to_str().expect("error")
+            );
             exit(1);
         }
     };
+
+    let lines = get_lines(&file);
+    println!("lines: {}", count_lines(lines));
 }
 
 fn get_lines(file: &File) -> Vec<String> {
