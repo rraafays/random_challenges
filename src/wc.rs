@@ -35,9 +35,9 @@ fn main() {
     let lines = get_lines(&file);
     println!(
         "{} {} {}",
-        count_lines(&lines),
+        lines.len(),
         count_words(&lines),
-        count_bytes(&lines)
+        file.metadata().unwrap().len()
     );
 }
 
@@ -53,18 +53,10 @@ fn get_lines(file: &File) -> Vec<String> {
     lines
 }
 
-fn count_lines(lines: &Vec<String>) -> usize { lines.len() }
 fn count_words(lines: &Vec<String>) -> usize {
     let mut words = 0;
     for line in lines {
         words += line.split_whitespace().count();
     }
     return words;
-}
-fn count_bytes(lines: &Vec<String>) -> usize {
-    let mut bytes = 0;
-    for line in lines {
-        bytes += line.bytes().count();
-    }
-    return bytes;
 }
