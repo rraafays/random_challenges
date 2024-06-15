@@ -34,10 +34,11 @@ fn main() {
 
     let lines = get_lines(&file);
     println!(
-        "{} {} {}",
+        "{} {} {} {}",
         lines.len(),
         count_words(&lines),
-        file.metadata().unwrap().len()
+        file.metadata().unwrap().len(),
+        path.to_str().expect("")
     );
 }
 
